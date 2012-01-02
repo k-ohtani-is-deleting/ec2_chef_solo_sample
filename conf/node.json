@@ -1,0 +1,5 @@
+{
+  "run_list":["recipe[timezone]", "recipe[apache_mysql_php]", "recipe[trac]"],
+  "php":{"memory_limit":["128"]},
+  "mysql":{"root_password":["nIKKEIlINUX"]}
+}
