@@ -1,0 +1,9 @@
+EC2上のAmazon Linux＋Chef Soloを使って簡単に環境を構築するサンプルです。
+
+インストールするもの
+・Apache
+・MySQL
+・PHP
+・Trac
+・Subversion
+・タイムゾーンの設定
