@@ -2,7 +2,7 @@
 # Cookbook Name:: apache_mysql_php
 # Recipe:: default
 #
-# Copyright 2011, ryuzee 
+# Copyright 2012, ryuzee 
 #
 # MIT License 
 #

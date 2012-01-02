@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: trac
+# Cookbook Name:: trac 
 # Recipe:: default
 #
-# Copyright 2011, YOUR_COMPANY_NAME
+# Copyright 2012, ryuzee 
 #
-# All rights reserved - Do Not Redistribute
+# MIT License 
 #
 case node[:platform]
 when "centos","amazon"
