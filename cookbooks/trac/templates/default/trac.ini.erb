@@ -216,7 +216,7 @@ htpasswd_file = <%= node["trac"]["password_file"] %>
 [components]
 webadmin.* = enabled
 trac.web.auth.loginmodule = disabled
-acct_mgr.admin.accountmanageradminpages = enabled
+acct_mgr.admin.* = enabled
 acct_mgr.api.accountmanager = enabled
 acct_mgr.htfile.abstractpasswordfilestore = enabled
 acct_mgr.htfile.htpasswdstore = enabled
