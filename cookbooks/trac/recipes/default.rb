@@ -6,8 +6,6 @@
 #
 # MIT License 
 #
-node["trac"]["trac_project_dir"]   = node["trac"]["trac_root_dir"]+"/"+node["trac"]["project_name"]
-node["trac"]["svn_repository_dir"] = node["trac"]["svn_repository_root_dir"]+"/"+node["trac"]["project_name"]
 case node[:platform]
 when "centos","amazon"
 
@@ -38,24 +36,24 @@ when "centos","amazon"
   end
 
   ## create svn repository
-  e = execute "svnadmin create #{node["trac"]["svn_repository_dir"]}" do
+  e = execute "svnadmin create #{node["trac"]["svn_repository_root_dir"]}/#{node["trac"]["project_name"]}" do
     action :run
-    not_if do File.exists?(node["trac"]["svn_repository_dir"]) end
+    not_if do File.exists?(node["trac"]["svn_repository_root_dir"]+"/"+node["trac"]["project_name"]) end
   end
 
   ## create trac project
-  e = execute "trac-admin #{node["trac"]["trac_project_dir"]} initenv #{node["trac"]["project_name"]} sqlite:db/trac.db svn #{node["trac"]["svn_repository_dir"]}" do
+  e = execute "trac-admin #{node["trac"]["trac_root_dir"]}/#{node["trac"]["project_name"]} initenv #{node["trac"]["project_name"]} sqlite:db/trac.db svn #{node["trac"]["svn_repository_root_dir"]}/#{node["trac"]["project_name"]}" do
     action :run
-    not_if do File.exists?("#{node["trac"]["trac_project_dir"]}/conf/trac.ini") end
+    not_if do File.exists?("#{node["trac"]["trac_root_dir"]}/#{node["trac"]["project_name"]}/conf/trac.ini") end
   end
 
   ## deploy trac wsgi
-  e = execute "trac-admin #{node["trac"]["trac_project_dir"]} deploy /var/www/trac/#{node["trac"]["project_name"]}" do
+  e = execute "trac-admin #{node["trac"]["trac_root_dir"]}/#{node["trac"]["project_name"]} deploy /var/www/trac/#{node["trac"]["project_name"]}" do
     action :run
   end
 
   ## change owner
-  dir_list=[node["trac"]["trac_project_dir"], node["trac"]["svn_repository_dir"]]
+  dir_list=[node["trac"]["trac_root_dir"]+"/"+node["trac"]["project_name"], node["trac"]["svn_repository_root_dir"]+"/"+node["trac"]["project_name"]]
   dir_list.each do |dir| 
     e = execute "chown -R apache:apache " + dir do
       action :run
@@ -94,9 +92,9 @@ when "centos","amazon"
   end
 
   ## add admin user to trac
-  e = execute "trac-admin #{node["trac"]["trac_project_dir"]} permission add #{node["trac"]["admin_account"]} TRAC_ADMIN" do
+  e = execute "trac-admin #{node["trac"]["trac_root_dir"]}/#{node["trac"]["project_name"]} permission add #{node["trac"]["admin_account"]} TRAC_ADMIN" do
     action :run
-    not_if "trac-admin #{node["trac"]["trac_project_dir"]} permission list | grep #{node["trac"]["admin_account"]}"
+    not_if "trac-admin #{node["trac"]["trac_root_dir"]}/#{node["trac"]["project_name"]} permission list | grep #{node["trac"]["admin_account"]}"
   end
 
   e = execute "easy_install http://trac-hacks.org/svn/accountmanagerplugin/trunk" do
