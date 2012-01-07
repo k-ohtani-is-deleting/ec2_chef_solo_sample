@@ -131,11 +131,13 @@
                 "group" : "wheel"
               },
               "/etc/chef/node.json" : {
-                "content" : {                  
+                "content" : {
                   "run_list": ["recipe[timezone]", "recipe[apache_mysql_php]", "recipe[trac]"],
-                  "trac":{"admin_account":{ "Ref" : "TracAccount" }},
-                  "trac":{"admin_password":{ "Ref" : "TracPassword" }},
-                  "trac":{"project_name":{ "Ref" : "ProjectName" }}
+                  "trac":{
+                    "admin_account":{ "Ref" : "TracAccount" },
+                    "admin_password":{ "Ref" : "TracPassword" },
+                    "project_name":{ "Ref" : "ProjectName" }
+                  }
                 },
                 "mode" : "000644",
                 "owner" : "root",
