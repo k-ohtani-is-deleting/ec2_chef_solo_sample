@@ -13,7 +13,33 @@
       "AllowedPattern" : "[-_ a-zA-Z0-9]*",
       "ConstraintDescription" : "can contain only alphanumeric characters, spaces, dashes and underscores."
     },    
-
+    "ProjectName": {
+      "Default": "sandbox",
+      "Description" : "Trac and Subversion project name",
+      "Type": "String",
+      "MinLength": "2",
+      "MaxLength": "16",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9-_]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+    "TracAccount": {
+      "Default": "admin",
+      "Description" : "Trac and Subversion username",
+      "Type": "String",
+      "MinLength": "4",
+      "MaxLength": "16",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9-_]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+    "TracPassword": {
+      "NoEcho": "true",
+      "Description" : "Trac account password.",
+      "Type": "String",
+      "MinLength": "6",
+      "MaxLength": "41",
+      "AllowedPattern" : "[a-zA-Z0-9-_!#$%]*",
+      "ConstraintDescription" : "alphanumeric characters and others."
+    },
     "InstanceType" : {
       "Description" : "WebServer EC2 instance type",
       "Type" : "String",
@@ -84,18 +110,12 @@
                  "make"       : [],
                  "autoconf"   : [],
                  "automake"   : [],
-                 "httpd"      : [],
                  "rubygems"   : []
               },
               "rubygems" : {
                  "chef" : [ "0.10.2" ]
               }
             },
-
-            "sources" : {
-              "/var/www/html" : "https://s3.amazonaws.com/cloudformation-examples/CloudFormationPHPSample.zip"
-            },
-
             "files" : {
               "/etc/chef/solo.rb" : {
                 "content" : { "Fn::Join" : ["\n", [
@@ -112,20 +132,14 @@
               },
               "/etc/chef/node.json" : {
                 "content" : {                  
-                  "run_list": ["recipe[timezone]", "recipe[apache_mysql_php]", "recipe[trac]"]
+                  "run_list": ["recipe[timezone]", "recipe[apache_mysql_php]", "recipe[trac]"],
+                  "trac":{"admin_account":{ "Ref" : "TracAccount" }},
+                  "trac":{"admin_password":{ "Ref" : "TracPassword" }},
+                  "trac":{"project_name":{ "Ref" : "ProjectName" }}
                 },
                 "mode" : "000644",
                 "owner" : "root",
                 "group" : "wheel"
-              }
-            },
-
-            "services" : {
-              "sysvinit" : {  
-                "httpd" : {
-                  "enabled"       : "true",
-                  "ensureRunning" : "true"                
-                }
               }
             }
           }
@@ -189,7 +203,7 @@
   
   "Outputs" : {
     "WebsiteURL" : {
-      "Value" : { "Fn::Join" : ["", ["http://", { "Fn::GetAtt" : [ "WebServer", "PublicDnsName" ]}]] },
+      "Value" : { "Fn::Join" : ["", ["http://", { "Fn::GetAtt" : [ "WebServer", "PublicDnsName" ]}, "/", {"Ref": "ProjectName"}]]},
       "Description" : "URL for newly created Trac"
     }
   }

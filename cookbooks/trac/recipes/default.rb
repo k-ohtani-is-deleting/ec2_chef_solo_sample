@@ -6,6 +6,8 @@
 #
 # MIT License 
 #
+node["trac"]["trac_project_dir"]   = node["trac"]["trac_root_dir"]+"/"+node["trac"]["project_name"]
+node["trac"]["svn_repository_dir"] = node["trac"]["svn_repository_root_dir"]+"/"+node["trac"]["project_name"]
 case node[:platform]
 when "centos","amazon"
 
