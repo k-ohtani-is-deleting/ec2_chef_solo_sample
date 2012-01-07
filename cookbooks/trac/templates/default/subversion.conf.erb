@@ -1,6 +1,6 @@
 <Location /repos/<%= node["trac"]["project_name"] %>>
    DAV svn
-   SVNPath <%= node["trac"]["svn_repository_dir"] %>
+   SVNPath <%= node["trac"]["svn_repository_root_dir"] %>/<%= node["trac"]["project_name"] %>>
    # Limit write permission to list of valid users.
 #   <LimitExcept GET PROPFIND OPTIONS REPORT>
       # Require SSL connection for password protection.
