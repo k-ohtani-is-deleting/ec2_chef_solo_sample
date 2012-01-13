@@ -1,0 +1,7 @@
+#LoadModule wsgi_module modules/mod_wsgi.so
+WSGIScriptAlias /<%= node["trac"]["project_name"] %>	/var/www/trac/<%= node["trac"]["project_name"] %>/cgi-bin/trac.wsgi
+
+WSGIApplicationGroup %{GLOBAL}
+#Order deny,allow
+#Allow from all
+
