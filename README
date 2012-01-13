@@ -1,9 +1,11 @@
 EC2上のAmazon Linux＋Chef Soloを使って簡単に環境を構築するサンプルです。
 
-インストールするもの
-・Apache
-・MySQL
-・PHP
-・Trac
-・Subversion
-・タイムゾーンの設定
+このディレクトリ
+├── README			現在お読みになっているこのファイル
+├── amzn-bootstrap.sh	CloudInitで読み込ませるスクリプト
+├── conf			Chef Solo用の設定ファイル
+├── cookbooks		記事内で利用したcookbook
+├── prepare.sh		CloudInitを利用しないで作成したインスタンスにChef Soloで必要なパッケージをインストールするスクリプト
+└── trac_sample		TracをChef Soloでインストールするサンプル	
+
+
